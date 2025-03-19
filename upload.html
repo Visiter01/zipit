@@ -1,0 +1,71 @@
+<!-- zipit/templates/zipit/upload.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zip It - Huffman File Compression</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .section {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input[type=file] {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Zip It - File Compression Tool</h1>
+    
+    <div class="container">
+        <div class="section">
+            <h2>Compress File</h2>
+            <form action="{% url 'zipit:compress_file' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>Select a file to compress using Huffman coding:</p>
+                <input type="file" name="file" required>
+                <button type="submit">Compress</button>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Decompress File</h2>
+            <form action="{% url 'zipit:decompress_file' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>Select a compressed file (.huff) to decompress:</p>
+                <input type="file" name="file" required>
+                <button type="submit">Decompress</button>
+            </form>
+        </div>
+    </div>
+    
+    <div style="margin-top: 20px; text-align: center;">
+        <p>This tool uses Huffman coding algorithm for efficient file compression.</p>
+    </div>
+</body>
+</html>
