@@ -6,4 +6,4 @@ type in command promt
 then make an app call zipit
 # zipit
 this is my first semester project
-add this file to by making an app zipit
+#########################################this contain two seperate file written in the individual file where it shoud be###################################################
