@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Zip It - Huffman File Compression</title>
+    <title>Zip It - File Compression</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,6 +37,22 @@
         input[type=file] {
             margin: 10px 0;
         }
+        select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+            padding: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -47,8 +63,26 @@
             <h2>Compress File</h2>
             <form action="{% url 'zipit:compress_file' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p>Select a file to compress using Huffman coding:</p>
+                <p>Select a file to compress:</p>
                 <input type="file" name="file" required>
+                
+                <div class="form-group">
+                    <label for="compression_method">Compression Method:</label>
+                    <select name="compression_method" id="compression_method">
+                        <option value="1" selected>DEFLATE (Better Compression)</option>
+                        <option value="0">Huffman (Original)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="level-group">
+                    <label for="compression_level">Compression Level:</label>
+                    <select name="compression_level" id="compression_level">
+                        <option value="1">Level 1 - Fastest</option>
+                        <option value="6" selected>Level 6 - Balanced</option>
+                        <option value="9">Level 9 - Maximum</option>
+                    </select>
+                </div>
+                
                 <button type="submit">Compress</button>
             </form>
         </div>
@@ -57,15 +91,30 @@
             <h2>Decompress File</h2>
             <form action="{% url 'zipit:decompress_file' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p>Select a compressed file (.huff) to decompress:</p>
+                <p>Select a compressed file (.huff or .dflt) to decompress:</p>
                 <input type="file" name="file" required>
                 <button type="submit">Decompress</button>
             </form>
         </div>
     </div>
     
-    <div style="margin-top: 20px; text-align: center;">
-        <p>This tool uses Huffman coding algorithm for efficient file compression.</p>
+    <div class="info-box">
+        <h3 style="margin-top: 0;">Compression Methods</h3>
+        <p><strong>DEFLATE:</strong> Combines dictionary-based compression with Huffman coding for better compression ratios. Ideal for most files.</p>
+        <p><strong>Huffman:</strong> The original compression method that assigns variable-length codes based on character frequency.</p>
+        <p>The system automatically detects the compression method when decompressing files.</p>
     </div>
+
+    <script>
+        // Show/hide compression level based on method selection
+        document.getElementById('compression_method').addEventListener('change', function() {
+            const levelGroup = document.getElementById('level-group');
+            if (this.value === "0") { // Huffman
+                levelGroup.style.display = 'none';
+            } else { // DEFLATE
+                levelGroup.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
