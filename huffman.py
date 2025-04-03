@@ -105,10 +105,10 @@ class HuffmanCompression:
         
         compressed_data = self.get_byte_array(padded_encoded_text)
         
-        # Store frequency dictionary for later decompression
+        # i have stored the  frequency dictionary for later decompression
         freq_dict_bytes = pickle.dumps(frequency)
         
-        # Combine frequency dict and compressed data
+        #cjust Combined frequency dict and compressed data if they are read seperatly
         result = len(freq_dict_bytes).to_bytes(4, byteorder='big')
         result += freq_dict_bytes
         result += compressed_data
@@ -146,20 +146,20 @@ class HuffmanCompression:
         if not compressed_data:
             return None
             
-        # Extract frequency dictionary
+        # Extracted the frequency dictionary
         freq_dict_size = int.from_bytes(compressed_data[:4], byteorder='big')
         freq_dict_bytes = compressed_data[4:4+freq_dict_size]
         frequency = pickle.loads(freq_dict_bytes)
         
-        # Extract compressed data
+        # Extracted the compressed data
         compressed_data = compressed_data[4+freq_dict_size:]
         
-        # Convert bytes to binary string
+        # Converted bytes to binary string
         bit_string = ""
         for byte in compressed_data:
             bit_string += bin(byte)[2:].rjust(8, '0')
             
-        # Remove padding
+        # Removed padding
         encoded_text = cls.remove_padding(bit_string)
         
         # Rebuild Huffman tree and decode
