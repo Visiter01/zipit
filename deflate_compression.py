@@ -19,7 +19,7 @@ class DeflateCompression:
         if not data:
             return None
         
-        # Compress the data using zlib
+        # i have compressed  the data using zlib this is inbuilt feature ffor compression
         compressed_data = zlib.compress(data, level)
         
         # Prepare the result: 1 byte for method + compressed data
@@ -37,7 +37,7 @@ class DeflateCompression:
         # Extract the compressed data (skip the method byte)
         data_to_decompress = compressed_data[1:]
         
-        # Decompress using zlib
+        #  i have decompresses  using zlib again in built feature for decompressor
         decompressed_data = zlib.decompress(data_to_decompress)
         
         return decompressed_data
@@ -82,12 +82,12 @@ class CompressFactory:
         if not compressed_data:
             return None
             
-        # Extract the compression method
+        # Extract the compression method (this used to from byte information )
         method = struct.unpack('B', compressed_data[:1])[0]
         
         if method == CompressionMethod.HUFFMAN:
             huffman = HuffmanCompression()
-            # Skip the method indicator byte
+            # just some error indicator
             return huffman.decompress(compressed_data[1:])
         elif method == CompressionMethod.DEFLATE:
             return DeflateCompression.decompress(compressed_data)
