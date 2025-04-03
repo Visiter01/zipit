@@ -14,12 +14,12 @@ def compress_file(request):
     if request.method == 'POST' and request.FILES.get('file'):
         uploaded_file = request.FILES['file']
         
-        # Read file content
+        # Read file content and store it
         file_content = uploaded_file.read()
         
-        # Get compression method from form (default to DEFLATE if not specified)
+        # Get compression method from form (default to DEFLATE if not specified)(as deflate is more efficient)
         compression_method = int(request.POST.get('compression_method', CompressionMethod.DEFLATE))
-        compression_level = int(request.POST.get('compression_level', 6))  # Default to medium compression
+        compression_level = int(request.POST.get('compression_level', 6))  # Default to medium compression(6 is for balanced 4 for lower and 9 for highest compression)
         
         # Compress the file using the factory
         if compression_method == CompressionMethod.HUFFMAN:
